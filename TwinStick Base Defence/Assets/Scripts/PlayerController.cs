@@ -5,17 +5,22 @@ using UnityEngine.UI;
 
 public class PlayerController : Agent
 {
-    [SerializeField] WeaponData[] equipment;
-    [SerializeField] Transform pSpawn;
+    [SerializeField] Equipment equipment;
+    [SerializeField] bool autoSwitch;
 
     [SerializeField] RectTransform healthBar, shieldBar;
     [SerializeField] Canvas respawnMenu;
 
+    [SerializeField] Transform handSlot, backSlot;
+
     GameController gameController;
+
+    int selectedWeapon;
 
     protected override void Start()
     {
         base.Start();
+        SelectWeapon(0);
         gameController = FindObjectOfType<GameController>();
         id = 1;
     }
@@ -23,21 +28,38 @@ public class PlayerController : Agent
     protected override void Update()
     {
         base.Update();
-        movement = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        var input = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+        movement = input.magnitude > 1 ? input.normalized : input;
         var screenPos = Camera.main.WorldToScreenPoint(transform.position);
         aimDir = new Vector3 (Input.mousePosition.x - screenPos.x,0f, Input.mousePosition.y - screenPos.y).normalized;
 
-        foreach (WeaponData weapon in equipment)
+        if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            weapon.cooldown -= Time.deltaTime;
+            SelectWeapon(0);
         }
-        if (equipment[0].cooldown <= 0 && Input.GetButton("Fire1"))
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            Shoot(0);
+            SelectWeapon(1);
         }
-        else if (equipment[1].cooldown <= 0 && Input.GetButton("Fire2"))
+        if (autoSwitch)
         {
-            Shoot(1);
+            if (Input.GetButtonDown("Fire1"))
+            {
+                SelectWeapon(0);
+            }
+            else if (Input.GetButtonDown("Fire2"))
+            {
+                SelectWeapon(1);
+            }
+        }
+        else if (Input.GetButtonDown("SwapWeapon"))
+        {
+            SwapWeapon();
+        }
+
+        if (weapon.data.cooldown <= 0 && (Input.GetButton("Fire1") || (autoSwitch && Input.GetButton("Fire2"))))
+        {
+            Shoot();
         }
         DisplayStats();
     }
@@ -48,16 +70,48 @@ public class PlayerController : Agent
         shield.SetScale(shieldBar);
     }
 
-    void Shoot(int weaponIndex)
+    void SwapWeapon()
     {
-        WeaponData weaponData = equipment[weaponIndex];
-        Vector3 dir = Quaternion.AngleAxis(Random.Range(-weaponData.accuracy, weaponData.accuracy), Vector3.up) * aimDir;
-        weaponData.cooldown = weaponData.maxCooldown;
-        Projectile projectile = Instantiate(weaponData.projectile, pSpawn.position, Quaternion.identity).GetComponent<Projectile>();
-        projectile.transform.LookAt(pSpawn.position + dir);
-        projectile.GetComponent<Rigidbody>().velocity = dir * weaponData.initialVelocity;
-        projectile.id = id;
-        rigidbody.AddForce(dir * -weaponData.recoil);
+        if (selectedWeapon == 0)
+        {
+            SelectWeapon(1);
+        }
+        else
+        {
+            SelectWeapon(0);
+        }
+    }
+
+    void NextWeapon()
+    {
+
+    }
+
+    void PreviousWeapon()
+    {
+
+    }
+
+    void SelectWeapon(int index)
+    {
+        switch (index)
+        {
+            case 0:
+                weapon = equipment.primary;
+                equipment.primary.targetTransform = handSlot;
+                equipment.secondary.targetTransform = backSlot;
+                goto default;
+
+            case 1:
+                weapon = equipment.secondary;
+                equipment.primary.targetTransform = backSlot;
+                equipment.secondary.targetTransform = handSlot;
+                goto default;
+
+            default:
+                selectedWeapon = index;
+                break;
+        }
     }
 
     public void Heal(float health)

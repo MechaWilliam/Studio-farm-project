@@ -27461,7 +27461,7 @@ ParticleSystem:
     - serializedVersion: 3
       emitter: {fileID: 564595204458069277}
       type: 0
-      properties: 0
+      properties: 2
       emitProbability: 1
   LightsModule:
     enabled: 0
