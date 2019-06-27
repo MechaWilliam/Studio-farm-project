@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerController : Agent
 {
-    [SerializeField] Equipment equipment;
-    [SerializeField] bool autoSwitch;
+    public Equipment equipment;
+    public bool autoSwitch;
 
     [SerializeField] RectTransform healthBar, shieldBar;
     [SerializeField] Canvas respawnMenu;
@@ -15,11 +15,15 @@ public class PlayerController : Agent
 
     GameController gameController;
 
+    [SerializeField] float pickupRange;
+
     int selectedWeapon;
 
     protected override void Start()
     {
         base.Start();
+        equipment.weapons[0].equipmentIndex = 0;
+        equipment.weapons[1].equipmentIndex = 1;
         SelectWeapon(0);
         gameController = FindObjectOfType<GameController>();
         id = 1;
@@ -57,10 +61,46 @@ public class PlayerController : Agent
             SwapWeapon();
         }
 
-        if (weapon.data.cooldown <= 0 && (Input.GetButton("Fire1") || (autoSwitch && Input.GetButton("Fire2"))))
+        if (equipment.weapons[selectedWeapon])
         {
-            Shoot();
+            if (equipment.weapons[selectedWeapon].data.cooldown <= 0 && (Input.GetButton("Fire1") || (autoSwitch && Input.GetButton("Fire2"))))
+            {
+                equipment.weapons[selectedWeapon].Shoot(this,aimDir);
+            }
         }
+
+        if (Input.GetButtonDown("Drop"))
+        {
+        }
+
+        if (Input.GetButtonDown("Interact"))
+        {
+            if (equipment.weapons[selectedWeapon] == null)
+            {
+                Weapon closestWeapon = null;
+                float shortestdistance = Mathf.Infinity;
+                foreach (Collider collider in Physics.OverlapSphere(transform.position, pickupRange))
+                {
+                    var weapon = collider.GetComponent<Weapon>();
+                    if (weapon)
+                    {
+                        if ((weapon.transform.position - transform.position).magnitude < shortestdistance)
+                        {
+                            closestWeapon = weapon;
+                        }
+                    }
+                }
+                if (closestWeapon)
+                {
+                    closestWeapon.Pickup(this, selectedWeapon);
+                }
+            }
+            else
+            {
+                equipment.weapons[selectedWeapon].Drop(this, aimDir);
+            }
+        }
+
         DisplayStats();
     }
 
@@ -94,23 +134,20 @@ public class PlayerController : Agent
 
     void SelectWeapon(int index)
     {
-        switch (index)
+        selectedWeapon = index;
+        foreach (Weapon weapon in equipment.weapons)
         {
-            case 0:
-                weapon = equipment.primary;
-                equipment.primary.targetTransform = handSlot;
-                equipment.secondary.targetTransform = backSlot;
-                goto default;
-
-            case 1:
-                weapon = equipment.secondary;
-                equipment.primary.targetTransform = backSlot;
-                equipment.secondary.targetTransform = handSlot;
-                goto default;
-
-            default:
-                selectedWeapon = index;
-                break;
+            if (weapon)
+            {
+                if (weapon.equipmentIndex == selectedWeapon)
+                {
+                    weapon.targetTransform = handSlot;
+                }
+                else
+                {
+                    weapon.targetTransform = backSlot;
+                }
+            }
         }
     }
 

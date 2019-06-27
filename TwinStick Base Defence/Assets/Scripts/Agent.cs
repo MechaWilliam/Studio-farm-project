@@ -9,7 +9,6 @@ public class Agent : MonoBehaviour
     public Stat health;
     public RegenStat shield;
     protected Vector3 movement, aimDir;
-    protected Weapon weapon;
 
     //effects
     [SerializeField] GameObject ShieldEffect;
@@ -19,7 +18,7 @@ public class Agent : MonoBehaviour
     [SerializeField] bool dontKill;
 
     //misc
-    [HideInInspector] protected new Rigidbody rigidbody;
+    [HideInInspector] public new Rigidbody rigidbody;
     [HideInInspector] public int id, lastHitId;
 
     protected virtual void Start()
@@ -35,11 +34,8 @@ public class Agent : MonoBehaviour
         shield.Regen();
 
         transform.LookAt(transform.position + aimDir);
-        if (weapon)
-        {
-            //weapon.transform.position = Vector3.Lerp(weapon.transform.position, transform.position + (aimDir * 1) + Vector3.up, Time.deltaTime * 5);
-            //weapon.transform.LookAt(transform.position + (aimDir * 10));
-        }
+        //weapon.transform.position = Vector3.Lerp(weapon.transform.position, transform.position + (aimDir * 1) + Vector3.up, Time.deltaTime * 5);
+        //weapon.transform.LookAt(transform.position + (aimDir * 10));
     }
 
     void FixedUpdate()
@@ -75,21 +71,6 @@ public class Agent : MonoBehaviour
         if (!dontKill)
         {
             Destroy(gameObject);
-        }
-    }
-
-    protected void Shoot()
-    {
-        weapon.data.cooldown = weapon.data.maxCooldown;
-        Vector3 dir = Quaternion.AngleAxis(Random.Range(-weapon.data.accuracy, weapon.data.accuracy), Vector3.up) * aimDir;
-        Projectile projectile = Instantiate(weapon.data.projectile, weapon.pSpawn.position, Quaternion.identity).GetComponent<Projectile>();
-        projectile.transform.LookAt(weapon.pSpawn.position + dir);
-        projectile.GetComponent<Rigidbody>().velocity = dir * weapon.data.initialVelocity;
-        projectile.id = id;
-        rigidbody.AddForce(dir * -weapon.data.recoil);
-        if (weapon.effect)
-        {
-            Instantiate(weapon.effect, weapon.eSpawn.transform).transform.parent = null;
         }
     }
 }

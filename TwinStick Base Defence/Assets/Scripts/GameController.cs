@@ -21,6 +21,9 @@ public class GameController : MonoBehaviour
     int score;
     [SerializeField] Text scoreText;
 
+    int resources;
+    [SerializeField] Text resourceText;
+
     public static PlayerController[] players;
 
     void Start()

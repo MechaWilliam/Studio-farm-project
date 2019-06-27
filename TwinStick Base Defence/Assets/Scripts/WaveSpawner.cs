@@ -128,5 +128,4 @@ public class WaveSpawner : MonoBehaviour
         // chooses random spawn point
         Instantiate(_enemy, _sp.position, _sp.rotation);
     }
-       
 }

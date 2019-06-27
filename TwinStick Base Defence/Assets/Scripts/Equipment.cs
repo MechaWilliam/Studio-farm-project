@@ -1,6 +1,5 @@
 ﻿[System.Serializable]
 public class Equipment
 {
-    public Weapon primary;
-    public Weapon secondary;
+    public Weapon[] weapons;
 }
