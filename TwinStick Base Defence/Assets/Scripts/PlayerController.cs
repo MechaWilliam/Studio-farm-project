@@ -22,8 +22,16 @@ public class PlayerController : Agent
     protected override void Start()
     {
         base.Start();
-        equipment.weapons[0].equipmentIndex = 0;
-        equipment.weapons[1].equipmentIndex = 1;
+        for (int i = 0; i < equipment.weapons.Length; i++)
+        {
+            var weapon = equipment.weapons[i];
+            if (weapon)
+            {
+                weapon.equipmentIndex = i;
+                weapon.equiped = true;
+                weapon.agent = this;
+            }
+        }
         SelectWeapon(0);
         gameController = FindObjectOfType<GameController>();
         id = 1;
@@ -55,6 +63,10 @@ public class PlayerController : Agent
             {
                 SelectWeapon(1);
             }
+            else if (Input.GetButtonDown("SwapWeapon"))
+            {
+                SwapWeapon(0, 1);
+            }
         }
         else if (Input.GetButtonDown("SwapWeapon"))
         {
@@ -63,14 +75,18 @@ public class PlayerController : Agent
 
         if (equipment.weapons[selectedWeapon])
         {
-            if (equipment.weapons[selectedWeapon].data.cooldown <= 0 && (Input.GetButton("Fire1") || (autoSwitch && Input.GetButton("Fire2"))))
+            if (Input.GetButton("Fire1") || (autoSwitch && Input.GetButton("Fire2")))
             {
-                equipment.weapons[selectedWeapon].Shoot(this,aimDir);
+                equipment.weapons[selectedWeapon].TriggerDown();
             }
-        }
-
-        if (Input.GetButtonDown("Drop"))
-        {
+            else if (Input.GetButtonUp("Fire1") || (autoSwitch && Input.GetButtonUp("Fire2")))
+            {
+                equipment.weapons[selectedWeapon].TriggerUp();
+            }
+            else if (Input.GetButtonDown("ToggleFireMode"))
+            {
+                equipment.weapons[selectedWeapon].ToggleFireMode();
+            }
         }
 
         if (Input.GetButtonDown("Interact"))
@@ -93,11 +109,13 @@ public class PlayerController : Agent
                 if (closestWeapon)
                 {
                     closestWeapon.Pickup(this, selectedWeapon);
+                    SelectWeapon(selectedWeapon);
                 }
             }
             else
             {
-                equipment.weapons[selectedWeapon].Drop(this, aimDir);
+                equipment.weapons[selectedWeapon].Drop(this,400);
+                SelectWeapon(selectedWeapon);
             }
         }
 
@@ -108,6 +126,36 @@ public class PlayerController : Agent
     {
         health.SetScale(healthBar);
         shield.SetScale(shieldBar);
+    }
+
+    void SwapWeapon(int weapon1, int weapon2)
+    {
+        if (equipment.weapons[weapon1])
+        {
+            if (equipment.weapons[weapon2])
+            {
+                var tempWeapon = equipment.weapons[weapon1];
+                equipment.weapons[weapon1] = equipment.weapons[weapon2];
+                equipment.weapons[weapon2] = tempWeapon;
+
+                equipment.weapons[weapon1].equipmentIndex = weapon1;
+                equipment.weapons[weapon2].equipmentIndex = weapon2;
+
+            }
+            else
+            {
+                equipment.weapons[weapon2] = equipment.weapons[weapon1];
+                equipment.weapons[weapon2].equipmentIndex = weapon2;
+                equipment.weapons[weapon1] = null;
+            }
+        }
+        else if (equipment.weapons[weapon2])
+        {
+            equipment.weapons[weapon1] = equipment.weapons[weapon2];
+            equipment.weapons[weapon1].equipmentIndex = weapon1;
+            equipment.weapons[weapon2] = null;
+        }
+        SelectWeapon(selectedWeapon);
     }
 
     void SwapWeapon()
@@ -146,9 +194,11 @@ public class PlayerController : Agent
                 else
                 {
                     weapon.targetTransform = backSlot;
+                    weapon.TriggerUp();
                 }
             }
         }
+        speed = equipment.weapons[selectedWeapon] ? maxSpeed * equipment.weapons[selectedWeapon].data.mobility : maxSpeed;
     }
 
     public void Heal(float health)
@@ -159,7 +209,14 @@ public class PlayerController : Agent
     protected override void Kill()
     {
         base.Kill();
-        respawnMenu.enabled = true;
+        foreach (Weapon weapon in equipment.weapons)
+        {
+            if (weapon)
+            {
+                weapon.Drop(this);
+            }
+        }
+        gameController.EndGame();
         GetComponentInChildren<MeshRenderer>().enabled = false;
         GetComponent<CapsuleCollider>().enabled = false;
         DisplayStats();
@@ -169,13 +226,10 @@ public class PlayerController : Agent
     public void Respawn()
     {
         enabled = true;
-        respawnMenu.enabled = false;
         transform.position = Vector3.zero;
         GetComponentInChildren<MeshRenderer>().enabled = true;
         GetComponent<CapsuleCollider>().enabled = true;
         enabled = true;
-        gameController.ResetScore();
-        gameController.StartWave(1);
         base.Start();
     }
 }

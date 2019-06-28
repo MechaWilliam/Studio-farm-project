@@ -4954,7 +4954,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b593ce536f7d34e9f9fe15dcf48f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killTimer: 0.05
+  maxKillTimer: 0.05
+  fadeLightSource: 0
 --- !u!1 &6500185843131199035
 GameObject:
   m_ObjectHideFlags: 0
@@ -9762,7 +9763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97af572b70bbd3044b4a174a3bc00fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 30
+  damage: 35
   force: 600
   radius: 0
   type: 0

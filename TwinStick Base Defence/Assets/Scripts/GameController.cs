@@ -7,9 +7,15 @@ public class GameController : MonoBehaviour
 {
     [SerializeField] GameObject playerPrefab;
     public int playerCount;
+
+    public GameObject[] weapons;
+    public int[] costs;
+    public GameObject spawnEffect;
+
     [SerializeField] SpawnData[] enemies;
     
     int waveIndex;
+    float waveTimer;
     int difficulty;
     [SerializeField] float waveDuration, waveCooldown;
     [SerializeField] Button waveButton;
@@ -23,16 +29,24 @@ public class GameController : MonoBehaviour
 
     int resources;
     [SerializeField] Text resourceText;
+    [SerializeField] Image setResourcesIcon;
+    public static Image resourcesIcon;
 
     public static PlayerController[] players;
 
+    MenuController menuController;
+
     void Start()
     {
+        menuController = FindObjectOfType<MenuController>();
+        resourcesIcon = setResourcesIcon;
         players = new PlayerController[playerCount];
         for(int i = 0;i<playerCount; i++)
         {
             players[i] = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<PlayerController>();
         }
+        SpawnWeapon(0, 0);
+        menuController.SetMenu("Start");
     }
     
     void Update()
@@ -61,6 +75,21 @@ public class GameController : MonoBehaviour
                 EndWave();
             }
         }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            PauseUnpause();
+        }
+        else if (Input.GetKeyDown(KeyCode.B))
+        {
+            menuController.SetMenu("Buy");
+        }
+    }
+
+    public void StartGame()
+    {
+        StartWave(1);
+        menuController.SetMenu(null,true,true,false);
     }
 
     public void StartWave(int setWave)
@@ -71,11 +100,7 @@ public class GameController : MonoBehaviour
 
     public void StartWave()
     {
-        dontScore = true;
-        foreach (EnemyController enemy in FindObjectsOfType<EnemyController>())
-        {
-            enemy.Damage(1000, Vector3.zero, enemy.transform.position);
-        }
+        KillAll(false, false);
         difficulty = 2 + (waveIndex * 2);
         SpawnData[] newSpawnPool = new SpawnData[difficulty];
         for (int i = 0; i < difficulty; i++)
@@ -84,17 +109,86 @@ public class GameController : MonoBehaviour
         }
         currentWave = new WaveData { spawnPool = newSpawnPool, timer = waveDuration };
         waveStarted = true;
-        dontScore = false;
         waveText.text = "WAVE " + waveIndex;
-        //players[0].Heal(100);
     }
 
     public void EndWave()
     {
         currentWave = null;
         waveStarted = false;
-        waveIndex++;
-        Invoke("StartWave", waveCooldown);
+        if (!gameover)
+        {
+            waveIndex++;
+            Invoke("StartWave", waveCooldown);
+        }
+    }
+
+    public void EndGame()
+    {
+        gameover = true;
+        CancelInvoke("StartWave");
+        EndWave();
+        menuController.SetMenu("Gameover",true, true, false);
+    }
+
+    public void ResetGame()
+    {
+        AddScore(-score);
+        AddResource(-resources);
+        KillAll();
+        gameover = false;
+        players[0].Respawn();
+        SpawnWeapon(0, 0);
+        waveText.text = null;
+        menuController.SetMenu("Start");
+    }
+
+    public void KillAll(bool killResource = true, bool killWeapons = true, bool killEnemies = true)
+    {
+        if(killResource)
+        {
+            foreach (Resource resource in FindObjectsOfType<Resource>())
+            {
+                Destroy(resource.gameObject);
+            }
+        }
+        if (killWeapons)
+        {
+            foreach (Weapon weapon in FindObjectsOfType<Weapon>())
+            {
+                Destroy(weapon.gameObject);
+            }
+        }
+        if (killEnemies)
+        {
+            dontScore = true;
+            foreach (EnemyController enemy in FindObjectsOfType<EnemyController>())
+            {
+                enemy.Damage(1000, Vector3.zero, enemy.transform.position);
+            }
+            dontScore = false;
+        }
+    }
+
+    public void Buy(int id)
+    {
+        if (resources >= costs[id])
+        {
+            SpawnWeapon(id, 0);
+            AddResource(-costs[id]);
+            menuController.Return();
+        }
+    }
+
+    public void SpawnWeapon(int id, int player)
+    {
+        SpawnWeapon(id, players[player].transform.position + new Vector3(0, 2, 2));
+    }
+
+    public void SpawnWeapon(int id, Vector3 pos)
+    {
+        Instantiate(weapons[id], pos,weapons[id].transform.rotation).GetComponent<Weapon>().equiped = false;
+        Instantiate(spawnEffect, pos, Quaternion.identity);
     }
 
     void SpawnEnemy(GameObject enemy)
@@ -103,15 +197,36 @@ public class GameController : MonoBehaviour
         Instantiate(enemy, spawnPos, Quaternion.identity);
     }
 
-    public void AddScore(int points)
+    public void AddScore(int value)
     {
-        score += points;
+        score += value;
         scoreText.text = "SCORE: " + score.ToString("00000");
     }
 
-    public void ResetScore()
+    public void AddResource(int value = 1)
     {
-        AddScore(-score);
+        resources += value;
+        resourceText.text = "x " + resources.ToString("000");
+        resourcesIcon.GetComponent<Animator>().SetBool("Trigger",true);
+    }
+
+    public void PauseUnpause()
+    {
+        if (Time.timeScale == 1)
+        {
+            Time.timeScale = 0;
+            menuController.SetMenu("Pause");
+        }
+        else
+        {
+            Time.timeScale = 1;
+            menuController.Return(0,true);
+        }
+    }
+
+    public void ToggleAutoSwitch(bool toggle)
+    {
+        players[0].autoSwitch = toggle;
     }
 }
 

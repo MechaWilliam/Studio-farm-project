@@ -4778,4 +4778,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54b593ce536f7d34e9f9fe15dcf48f60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  killTimer: 5
+  maxKillTimer: 5
+  fadeLightSource: 0

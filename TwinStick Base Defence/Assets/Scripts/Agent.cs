@@ -5,10 +5,11 @@ using UnityEngine;
 public class Agent : MonoBehaviour
 {
     //stats
-    [SerializeField] protected float speed;
+    [SerializeField] protected float maxSpeed;
+    protected float speed;
     public Stat health;
     public RegenStat shield;
-    protected Vector3 movement, aimDir;
+    [HideInInspector] public Vector3 movement, aimDir;
 
     //effects
     [SerializeField] GameObject ShieldEffect;
@@ -32,8 +33,10 @@ public class Agent : MonoBehaviour
     protected virtual void Update()
     {
         shield.Regen();
-
-        transform.LookAt(transform.position + aimDir);
+        if (Time.timeScale == 1)
+        {
+            transform.LookAt(transform.position + aimDir);
+        }
         //weapon.transform.position = Vector3.Lerp(weapon.transform.position, transform.position + (aimDir * 1) + Vector3.up, Time.deltaTime * 5);
         //weapon.transform.LookAt(transform.position + (aimDir * 10));
     }
@@ -52,7 +55,7 @@ public class Agent : MonoBehaviour
         }
         else
         {
-            Instantiate(damageEffect, pos, Quaternion.LookRotation(-force));
+            Instantiate(damageEffect, pos, force == Vector3.zero ? Quaternion.identity : Quaternion.LookRotation(-force));
             health.value -= (damage - shield.value);
             shield.value = 0f;
         }

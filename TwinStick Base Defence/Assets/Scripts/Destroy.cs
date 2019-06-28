@@ -4,9 +4,28 @@ using UnityEngine;
 
 public class Destroy : MonoBehaviour
 {
-    [SerializeField] float killTimer;
+    [SerializeField] float maxKillTimer;
+    [SerializeField] bool fadeLightSource;
+
+    Light lightSource;
+
+    float maxIntensity;
+
     void Start()
     {
-        Destroy(gameObject, killTimer);
+        if (fadeLightSource)
+        {
+            lightSource = GetComponent<Light>();
+            maxIntensity = lightSource.intensity;
+        }
+        Destroy(gameObject, maxKillTimer);
+    }
+
+    private void Update()
+    {
+        if (fadeLightSource)
+        {
+            lightSource.intensity -= (maxIntensity * Time.deltaTime) / maxKillTimer;
+        }
     }
 }

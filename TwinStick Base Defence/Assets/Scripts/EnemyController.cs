@@ -9,12 +9,14 @@ public class EnemyController : Agent
     PlayerController player;
     
     [SerializeField] int points;
+    [SerializeField] GameObject drop;
 
     protected override void Start()
     {
         base.Start();
         id = Random.Range(1000, 10000);
         player = GameController.players[0];
+        speed = maxSpeed;
     }
 
     protected override void Update()
@@ -42,6 +44,10 @@ public class EnemyController : Agent
         if (!GameController.dontScore)
         {
             FindObjectOfType<GameController>().AddScore(points);
+            if (drop)
+            {
+                Instantiate(drop, transform.position, Quaternion.identity);
+            }
         }
     }
 }

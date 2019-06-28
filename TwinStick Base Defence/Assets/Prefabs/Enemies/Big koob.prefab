@@ -123,7 +123,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5cf9c653e36b6943bf0ef0bff1ab3c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 200
+  maxSpeed: 200
   health:
     maxValue: 300
     value: 0
@@ -131,6 +131,9 @@ MonoBehaviour:
     maxValue: 0
     value: 0
     rate: 0
+  movement: {x: 0, y: 0, z: 0}
+  aimDir: {x: 0, y: 0, z: 0}
+  ShieldEffect: {fileID: 0}
   damageEffect: {fileID: 3566338966645305361, guid: 4d36dfa76a7178b47bb4c91e2d150544,
     type: 3}
   killEffect: {fileID: 1389971736841347596, guid: 355157ee391417949b1edcc09f12ab1e,
@@ -138,12 +141,14 @@ MonoBehaviour:
   effectScale: 3
   effectHeight: 0
   dontKill: 0
+  rigidbody: {fileID: 0}
   id: 0
   lastHitId: 0
   damage: 50
-  force: 7500
+  force: 5000
   maxAttackCooldown: 5
   points: 500
+  drop: {fileID: 4357574695026428248, guid: 0245180bb69208f41ae8bf52a80891ee, type: 3}
 --- !u!54 &1138795875
 Rigidbody:
   m_ObjectHideFlags: 0
