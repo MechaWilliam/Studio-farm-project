@@ -7,11 +7,14 @@ public class Weapon : MonoBehaviour
     public WeaponData data;
     public Transform pSpawn;
     public GameObject effect;
+    public float effectDelay;
     public Transform eSpawn;
     [HideInInspector] public bool equiped = false;
     [HideInInspector] public int equipmentIndex;
     [HideInInspector] public Transform targetTransform;
     [HideInInspector] public Agent agent;
+
+    [SerializeField] bool ignorObstruction;
 
     Animator animator;
 
@@ -86,25 +89,33 @@ public class Weapon : MonoBehaviour
 
     void Shoot()
     {
-        cooldown = data.maxCooldown;
-        Vector3 dir = Quaternion.AngleAxis(Random.Range(-data.accuracy, data.accuracy), Vector3.up) * (equiped ? agent.aimDir : transform.rotation * Vector3.forward);
-        Projectile projectile = Instantiate(data.projectile, pSpawn.position, Quaternion.identity).GetComponent<Projectile>();
-        projectile.transform.LookAt(pSpawn.position + dir);
-        projectile.GetComponent<Rigidbody>().velocity = dir * data.initialVelocity;
-        projectile.id = agent.id;
-        agent.rigidbody.AddForce(dir * -data.recoil);
-        if (effect)
+        if (ignorObstruction || !Physics.CheckSphere(pSpawn.position, 0.25f, ~(1<<10)))
         {
-            Instantiate(effect, eSpawn.transform).transform.parent = null;
-        }
-        if (animator)
-        {
-            animator.SetBool("Trigger", true);
+            cooldown = data.maxCooldown[fireMode];
+            Vector3 dir = Quaternion.AngleAxis(Random.Range(-data.accuracy, data.accuracy), Vector3.up) * (agent ? agent.aimDir : transform.rotation * Vector3.forward);
+            Vector3 aimPos = agent ? agent.transform.position + (dir * 10f) : pSpawn.position + dir;
+            aimPos.y = transform.position.y;
+            Projectile projectile = Instantiate(data.projectile, pSpawn.position, Quaternion.identity).GetComponent<Projectile>();
+            projectile.transform.LookAt(aimPos);
+            projectile.GetComponent<Rigidbody>().velocity = projectile.transform.forward * data.initialVelocity;
+            projectile.id = (agent && !ignorObstruction) ? agent.id : 100;
+            if (agent)
+            {
+                agent.rigidbody.AddForce(dir * -data.recoil);
+            }
+            if (effect)
+            {
+                Invoke("DoEffect", effectDelay);
+            }
+            if (animator)
+            {
+                animator.SetBool("Trigger", true);
+            }
         }
     }
 
 
-    public void Pickup(PlayerController player, int slot)
+    public void Pickup(PlayerController player, int slot, bool switchTo = false)
     {
         equiped = true;
         player.equipment.weapons[slot] = this;
@@ -113,6 +124,10 @@ public class Weapon : MonoBehaviour
         agent = player;
         GetComponent<Rigidbody>().isKinematic = true;
         GetComponent<BoxCollider>().enabled = false;
+        if(switchTo || player.selectedWeapon == equipmentIndex)
+        {
+            player.SelectWeapon(equipmentIndex);
+        }
     }
 
     public void Drop(PlayerController player, float force = 0)
@@ -129,7 +144,12 @@ public class Weapon : MonoBehaviour
         Rigidbody rigidbody = GetComponent<Rigidbody>();
         rigidbody.isKinematic = false;
         rigidbody.AddForce(agent.aimDir * force);
-        rigidbody.AddTorque(new Vector3(0, 500, 0));
+        rigidbody.AddTorque(new Vector3(200, 500, 200));
         TriggerUp();
+    }
+
+    public void DoEffect()
+    {
+        Instantiate(effect, eSpawn.transform).transform.parent = null;
     }
 }

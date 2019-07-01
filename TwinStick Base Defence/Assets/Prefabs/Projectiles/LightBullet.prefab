@@ -4915,7 +4915,7 @@ Light:
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 0.87883836, b: 0.3820755, a: 1}
-  m_Intensity: 0.75
+  m_Intensity: 1
   m_Range: 7.5
   m_SpotAngle: 30
   m_CookieSize: 10
@@ -9763,7 +9763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97af572b70bbd3044b4a174a3bc00fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 25
+  damage: 30
   force: 400
   radius: 0
   type: 0

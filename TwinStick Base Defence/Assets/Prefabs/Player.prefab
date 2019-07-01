@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2058289073321796600}
   - component: {fileID: 2058289073321796602}
   - component: {fileID: 2058289073321796603}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -86,7 +86,7 @@ GameObject:
   - component: {fileID: 3161244408259327813}
   - component: {fileID: 3161244408259327812}
   - component: {fileID: 3161244408259327867}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -155,12 +155,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 150
   health:
-    maxValue: 100
+    maxValue: 200
     value: 0
   shield:
-    maxValue: 50
+    maxValue: 100
     value: 0
-    rate: 10
+    rate: 50
   movement: {x: 0, y: 0, z: 0}
   aimDir: {x: 0, y: 0, z: 0}
   ShieldEffect: {fileID: 0}
@@ -184,7 +184,8 @@ MonoBehaviour:
   respawnMenu: {fileID: 0}
   handSlot: {fileID: 5966162814578135863}
   backSlot: {fileID: 4705382400582011960}
-  pickupRange: 1
+  pickupRange: 2
+  selectedWeapon: 0
 --- !u!1 &4352179249486226987
 GameObject:
   m_ObjectHideFlags: 0
@@ -196,7 +197,7 @@ GameObject:
   - component: {fileID: 4352179249486226988}
   - component: {fileID: 4352179249486226990}
   - component: {fileID: 4352179249486226989}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Shield
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -269,7 +270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5966162814578135863}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -284,7 +285,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5966162814578135860}
   m_LocalRotation: {x: -0.002580532, y: -0.01779223, z: 0.14077963, w: 0.98987776}
-  m_LocalPosition: {x: 0.5639148, y: 0.9589966, z: 0.30839577}
+  m_LocalPosition: {x: 0.621, y: 0.9589966, z: 0.251}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3161244408259327808}
@@ -301,7 +302,7 @@ GameObject:
   - component: {fileID: 5985635375512907733}
   - component: {fileID: 5985635375512907735}
   - component: {fileID: 5985635375512907734}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Bar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +376,7 @@ GameObject:
   - component: {fileID: 647709154843365893}
   - component: {fileID: 1433221494801870003}
   - component: {fileID: 4864500590457371340}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -450,7 +451,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4705382400582011960}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Back holster
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -482,7 +483,7 @@ GameObject:
   - component: {fileID: 8417626204058319758}
   - component: {fileID: 8417626204058319756}
   - component: {fileID: 8417626204058319759}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: Health
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -558,7 +559,7 @@ GameObject:
   - component: {fileID: 8417626204436377218}
   - component: {fileID: 8417626204436377341}
   - component: {fileID: 8417626204436377340}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: HUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}

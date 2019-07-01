@@ -6,10 +6,17 @@ public class EnemyController : Agent
 {
     [SerializeField] float damage, force, maxAttackCooldown;
     float attackCooldown;
+    [SerializeField] Weapon weapon;
+
     PlayerController player;
-    
+
+    [SerializeField] float maxStuckTime, minStuckDistance, unStickForce;
+    float stuckTimer;
+    Vector3 lastPos;
+
     [SerializeField] int points;
     [SerializeField] GameObject drop;
+    bool kill;
 
     protected override void Start()
     {
@@ -17,6 +24,10 @@ public class EnemyController : Agent
         id = Random.Range(1000, 10000);
         player = GameController.players[0];
         speed = maxSpeed;
+        if (weapon)
+        {
+            weapon.agent = this;
+        }
     }
 
     protected override void Update()
@@ -27,27 +38,58 @@ public class EnemyController : Agent
         {
             movement = (player.transform.position - transform.position).normalized;
         }
+
+        if ((lastPos - transform.position).magnitude <= minStuckDistance)
+        {
+            stuckTimer += Time.deltaTime;
+            if (stuckTimer >= maxStuckTime)
+            {
+                rigidbody.AddForce(Vector3.up * unStickForce);
+                stuckTimer = 0;
+            }
+        }
+        else
+        {
+            stuckTimer = 0;
+        }
+        lastPos = transform.position;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        if ( collision.collider.tag == "Player")
+        if (collision.collider.tag == "Player")
         {
-            collision.collider.GetComponent<Agent>().Damage(damage, (player.transform.position - transform.position).normalized * force,collision.GetContact(0).point);
-            attackCooldown = maxAttackCooldown;
+            if (weapon)
+            {
+                Kill();
+            }
+            else if(attackCooldown <= 0)
+            {
+                collision.collider.GetComponent<Agent>().Damage(damage, (player.transform.position - transform.position).normalized * force, collision.GetContact(0).point);
+                attackCooldown = maxAttackCooldown;
+            }
         }
     }
 
     protected override void Kill()
     {
-        base.Kill();
-        if (!GameController.dontScore)
+        if (!kill)
         {
-            FindObjectOfType<GameController>().AddScore(points);
-            if (drop)
+            kill = true;
+            if (weapon)
             {
-                Instantiate(drop, transform.position, Quaternion.identity);
+                aimDir = Vector3.down;
+                weapon.TriggerDown();
             }
+            if (!GameController.dontScore)
+            {
+                FindObjectOfType<GameController>().AddScore(points);
+                if (drop)
+                {
+                    Instantiate(drop, transform.position, Quaternion.identity);
+                }
+            }
+            base.Kill();
         }
     }
 }

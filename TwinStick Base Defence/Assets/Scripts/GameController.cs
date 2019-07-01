@@ -14,13 +14,14 @@ public class GameController : MonoBehaviour
 
     [SerializeField] SpawnData[] enemies;
     
+
+    [SerializeField] float waveBaseTime, clearingTime, waveCooldown;
+    [HideInInspector] public static bool waveStarted, clearing, gameover, dontScore;
+    WaveData currentWave;
     int waveIndex;
+    float waveTime;
     float waveTimer;
     int difficulty;
-    [SerializeField] float waveDuration, waveCooldown;
-    [SerializeField] Button waveButton;
-    [HideInInspector] public static bool waveStarted, gameover, dontScore;
-    WaveData currentWave;
 
     [SerializeField] Text waveText;
 
@@ -45,34 +46,70 @@ public class GameController : MonoBehaviour
         {
             players[i] = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<PlayerController>();
         }
-        SpawnWeapon(0, 0);
+        SpawnWeapon(0, 0, false);
         menuController.SetMenu("Start");
     }
     
     void Update()
     {
-        if (waveStarted)
+        if (!gameover)
         {
-            if (currentWave.timer > 0)
+            if (waveStarted)
             {
-                for (int i = 0; i < currentWave.spawnPool.Length; i++)
+                if (!clearing)
                 {
-                    if (currentWave.spawnPool[i].spawnTimer <= 0)
+                    if (waveTimer > 0)
                     {
-                        SpawnEnemy(currentWave.spawnPool[i].enemy);
-                        currentWave.spawnPool[i].spawnTimer = waveDuration / currentWave.spawnPool[i].count;
+                        float waveProgress = 1 - waveTimer / waveTime;
+                        for (int i = 0; i < currentWave.spawnPool.Length; i++)
+                        {
+                            if (currentWave.spawnPool[i].enemiesSpawned >= currentWave.spawnPool[i].count || waveProgress < currentWave.spawnPool[i].startDistribution || waveProgress >= currentWave.spawnPool[i].endDistribution) continue;
+
+                            if (currentWave.spawnPool[i].spawnTimer <= 0)
+                            {
+                                SpawnEnemy(currentWave.spawnPool[i].enemy);
+
+                                float newOffset = Random.Range(0, 1f);
+                                currentWave.spawnPool[i].spawnTimer = (currentWave.spawnPool[i].maxSpawnTimer * (1 - currentWave.spawnPool[i].timerOffset)) + (currentWave.spawnPool[i].maxSpawnTimer * newOffset);
+                                currentWave.spawnPool[i].timerOffset = newOffset;
+                                currentWave.spawnPool[i].enemiesSpawned++;
+                            }
+                            else
+                            {
+                                currentWave.spawnPool[i].spawnTimer -= Time.deltaTime;
+                            }
+                        }
+                        waveTimer -= Time.deltaTime;
                     }
                     else
                     {
-                        currentWave.spawnPool[i].spawnTimer -= Time.deltaTime;
+                        clearing = true;
+                        waveTimer = clearingTime;
+                        waveText.text = "CLEARING";
                     }
                 }
-                currentWave.timer -= Time.deltaTime;
-                //waveText.text = "WAVE " + waveIndex + " " + (currentWave.timer > 60 ? ((int)(currentWave.timer / 60)).ToString("00") + ":" + ((int)(currentWave.timer % 60)).ToString("00") : currentWave.timer.ToString("00.00"));
+                else if (waveTimer <= 0 || FindObjectsOfType<EnemyController>().Length == 0)
+                {
+                    EndWave();
+                }
+                else
+                {
+                    waveTimer -= Time.deltaTime;
+                    waveText.text = "CLEARING: " + " " + waveTimer.ToString("0.0");
+                }
             }
-            else
+            else if (waveIndex > 0)
             {
-                EndWave();
+                if (waveTimer > 0)
+                {
+                    waveText.text = "NEXT WAVE: " + " " + waveTimer.ToString("0.0");
+                    waveTimer -= Time.deltaTime;
+                }
+                else
+                {
+                    Debug.Log("yes");
+                    StartWave();
+                }
             }
         }
 
@@ -88,8 +125,8 @@ public class GameController : MonoBehaviour
 
     public void StartGame()
     {
+        gameover = false;
         StartWave(1);
-        menuController.SetMenu(null,true,true,false);
     }
 
     public void StartWave(int setWave)
@@ -100,47 +137,72 @@ public class GameController : MonoBehaviour
 
     public void StartWave()
     {
-        KillAll(false, false);
+        Debug.Log("waveStarted");
         difficulty = 2 + (waveIndex * 2);
+        waveTime = waveBaseTime + difficulty;
+        List<SpawnData> spawnRange = new List<SpawnData>();
         SpawnData[] newSpawnPool = new SpawnData[difficulty];
+        foreach (SpawnData enemy in enemies)
+        {
+            if (enemy.minDifficulty <= difficulty && (enemy.maxDifficulty == 0 || enemy.maxDifficulty >= difficulty))
+            {
+                spawnRange.Add(enemy);
+            }
+        }
         for (int i = 0; i < difficulty; i++)
         {
-            newSpawnPool[i] = enemies[Random.Range(0, enemies.Length)];
+            newSpawnPool[i] = spawnRange[Random.Range(0, spawnRange.Count)];
         }
-        currentWave = new WaveData { spawnPool = newSpawnPool, timer = waveDuration };
+        for (int i = 0; i < newSpawnPool.Length; i++) //initialize spawn sets
+        {
+            newSpawnPool[i].maxSpawnTimer = (waveTime / newSpawnPool[i].count) * (1 / (newSpawnPool[i].endDistribution - newSpawnPool[i].startDistribution));
+            newSpawnPool[i].timerOffset = 1;
+        }
+        currentWave = new WaveData { spawnPool = newSpawnPool};
         waveStarted = true;
+        waveTimer = waveTime;
         waveText.text = "WAVE " + waveIndex;
+        menuController.SetMenu(null, true, true, false);
     }
 
     public void EndWave()
     {
         currentWave = null;
         waveStarted = false;
+        clearing = false;
         if (!gameover)
         {
+            KillAll(false, false);
             waveIndex++;
-            Invoke("StartWave", waveCooldown);
+            waveTimer = waveCooldown;
+            menuController.SetMenu("NextWave", true, true, false);
+        }
+        else
+        {
+            waveTimer = 0;
+            waveText.text = "WAVE " + waveIndex;
         }
     }
 
     public void EndGame()
     {
         gameover = true;
-        CancelInvoke("StartWave");
         EndWave();
-        menuController.SetMenu("Gameover",true, true, false);
+        menuController.SetMenu("Gameover", true, true, false);
     }
 
     public void ResetGame()
     {
+        gameover = true;
+        EndWave();
         AddScore(-score);
         AddResource(-resources);
         KillAll();
-        gameover = false;
         players[0].Respawn();
         SpawnWeapon(0, 0);
         waveText.text = null;
-        menuController.SetMenu("Start");
+        menuController.SetMenu("Start",true, true, false);
+        Time.timeScale = 1;
     }
 
     public void KillAll(bool killResource = true, bool killWeapons = true, bool killEnemies = true)
@@ -180,21 +242,37 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void SpawnWeapon(int id, int player)
+    public void SpawnWeapon(int id, int player, bool pickup = true)
     {
-        SpawnWeapon(id, players[player].transform.position + new Vector3(0, 2, 2));
+        int slot;
+        if (pickup && players[player].GetEmptySlot(out slot))
+        {
+            Weapon weapon;
+            SpawnWeapon(id, players[player].transform.position, out weapon);
+            weapon.Pickup(players[player], slot, true);
+        }
+        else
+        {
+            SpawnWeapon(id, players[player].transform.position + new Vector3(0, 2, 2));
+        }
     }
 
     public void SpawnWeapon(int id, Vector3 pos)
     {
-        Instantiate(weapons[id], pos,weapons[id].transform.rotation).GetComponent<Weapon>().equiped = false;
+        SpawnWeapon(id, pos, out Weapon weapon);
+        weapon.equiped = false;
+    }
+
+    public void SpawnWeapon(int id, Vector3 pos, out Weapon weapon)
+    {
         Instantiate(spawnEffect, pos, Quaternion.identity);
+        weapon = Instantiate(weapons[id], pos, weapons[id].transform.rotation).GetComponent<Weapon>();
     }
 
     void SpawnEnemy(GameObject enemy)
     {
         Vector3 spawnPos = new Vector3(Random.Range(-1f, 1f), 0f, Random.Range(-1f, 1f)).normalized * 50;
-        Instantiate(enemy, spawnPos, Quaternion.identity);
+        Debug.Log("Spawned " + Instantiate(enemy, spawnPos, Quaternion.identity).name + " at: " + (waveTimer > 60 ? ((int)(waveTimer / 60)).ToString("00") + ":" + ((int)(waveTimer % 60)).ToString("00") : waveTimer.ToString("00.00")));
     }
 
     public void AddScore(int value)
@@ -234,15 +312,16 @@ public class GameController : MonoBehaviour
 public class WaveData
 {
     public SpawnData[] spawnPool;
-    [HideInInspector] public float timer;
 }
 
 [System.Serializable]
 public struct SpawnData
 {
     public string name;
-    //public int minDifficulty, maxDifficulty; - would be used to select certain enemies as waves progress but for now im just adding all of them(in start wave)
     public GameObject enemy;
     public int count;
-    [HideInInspector] public float spawnTimer;
+    public int minDifficulty, maxDifficulty;
+    [Range(0, 1)] public float startDistribution, endDistribution;
+    [HideInInspector] public float spawnRatio, maxSpawnTimer, spawnTimer, timerOffset;
+    [HideInInspector] public int enemiesSpawned;
 }

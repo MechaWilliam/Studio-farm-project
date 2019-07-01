@@ -66,4 +66,9 @@ public class MenuController : MonoBehaviour
         history.Remove(history[history.Count - 1]);
         SetMenu(history[history.Count - 1], false);
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }

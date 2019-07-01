@@ -9763,7 +9763,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97af572b70bbd3044b4a174a3bc00fe2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 35
+  damage: 60
   force: 600
   radius: 0
   type: 0

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 812000291}
   - component: {fileID: 812000290}
   - component: {fileID: 812000289}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Hover koob
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -68,9 +68,13 @@ MonoBehaviour:
   rigidbody: {fileID: 0}
   id: 0
   lastHitId: 0
-  damage: 10
+  damage: 25
   force: 500
-  maxAttackCooldown: 0.5
+  maxAttackCooldown: 0.1
+  weapon: {fileID: 0}
+  maxStuckTime: 0.5
+  minStuckDistance: 0.1
+  unStickForce: 200
   points: 200
   drop: {fileID: 1463319262316087698, guid: e115ab5ad259e6747aecdb3746569c43, type: 3}
 --- !u!54 &812000291
@@ -134,7 +138,7 @@ GameObject:
   - component: {fileID: 2130550896}
   - component: {fileID: 2130550895}
   - component: {fileID: 2130550894}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Enemy
   m_Icon: {fileID: 0}

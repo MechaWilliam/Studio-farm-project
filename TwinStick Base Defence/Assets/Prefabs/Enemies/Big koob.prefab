@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1126222982}
   - component: {fileID: 1126222984}
   - component: {fileID: 1126222983}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Cube
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -89,7 +89,7 @@ GameObject:
   - component: {fileID: 1138795876}
   - component: {fileID: 1138795875}
   - component: {fileID: 7593529410048102340}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Big koob
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 200
   health:
-    maxValue: 300
+    maxValue: 600
     value: 0
   shield:
     maxValue: 0
@@ -144,9 +144,13 @@ MonoBehaviour:
   rigidbody: {fileID: 0}
   id: 0
   lastHitId: 0
-  damage: 50
+  damage: 100
   force: 5000
-  maxAttackCooldown: 5
+  maxAttackCooldown: 2
+  weapon: {fileID: 0}
+  maxStuckTime: 3
+  minStuckDistance: 0.1
+  unStickForce: 8000
   points: 500
   drop: {fileID: 4357574695026428248, guid: 0245180bb69208f41ae8bf52a80891ee, type: 3}
 --- !u!54 &1138795875

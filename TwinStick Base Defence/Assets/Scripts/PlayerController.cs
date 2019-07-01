@@ -17,7 +17,7 @@ public class PlayerController : Agent
 
     [SerializeField] float pickupRange;
 
-    int selectedWeapon;
+    [HideInInspector] public int selectedWeapon;
 
     protected override void Start()
     {
@@ -89,33 +89,51 @@ public class PlayerController : Agent
             }
         }
 
-        if (Input.GetButtonDown("Interact"))
+        if (Input.GetButton("Drop") && equipment.weapons[selectedWeapon])
         {
-            if (equipment.weapons[selectedWeapon] == null)
+            DropWeapon(0);
+        }
+        else if (Input.GetButtonDown("Interact"))
+        {
+            int index;
+            Weapon closestWeapon = null;
+            float shortestdistance = Mathf.Infinity;
+            foreach (Collider collider in Physics.OverlapSphere(transform.position, pickupRange * 2))
             {
-                Weapon closestWeapon = null;
-                float shortestdistance = Mathf.Infinity;
-                foreach (Collider collider in Physics.OverlapSphere(transform.position, pickupRange))
+                var weapon = collider.GetComponent<Weapon>();
+                if (weapon)
                 {
-                    var weapon = collider.GetComponent<Weapon>();
-                    if (weapon)
+                    Vector3 dif = (weapon.transform.position - transform.position);
+                    dif.y = 0;
+                    if (dif.magnitude <= pickupRange && dif.magnitude < shortestdistance)
                     {
-                        if ((weapon.transform.position - transform.position).magnitude < shortestdistance)
-                        {
-                            closestWeapon = weapon;
-                        }
+                        closestWeapon = weapon;
                     }
                 }
-                if (closestWeapon)
+            }
+            if (closestWeapon)
                 {
+                if (GetEmptySlot(out index))
+                {
+                    closestWeapon.Pickup(this, index);
+                    if (equipment.weapons[selectedWeapon])
+                    {
+                        SelectWeapon(selectedWeapon);
+                    }
+                    else
+                    {
+                        SelectWeapon(index);
+                    }
+                }
+                else
+                {
+                    DropWeapon(400);
                     closestWeapon.Pickup(this, selectedWeapon);
-                    SelectWeapon(selectedWeapon);
                 }
             }
-            else
+            else if(equipment.weapons[selectedWeapon])
             {
-                equipment.weapons[selectedWeapon].Drop(this,400);
-                SelectWeapon(selectedWeapon);
+                DropWeapon(400);
             }
         }
 
@@ -180,7 +198,7 @@ public class PlayerController : Agent
 
     }
 
-    void SelectWeapon(int index)
+    public void SelectWeapon(int index)
     {
         selectedWeapon = index;
         foreach (Weapon weapon in equipment.weapons)
@@ -199,6 +217,30 @@ public class PlayerController : Agent
             }
         }
         speed = equipment.weapons[selectedWeapon] ? maxSpeed * equipment.weapons[selectedWeapon].data.mobility : maxSpeed;
+    }
+
+    public bool GetEmptySlot(out int index)
+    {
+        for (int i = 0; i < equipment.weapons.Length; i++)
+        {
+            if (equipment.weapons[i])
+            {
+                continue;
+            }
+            else
+            {
+                index = i;
+                return true;
+            }
+        }
+        index = 0;
+        return false;
+    }
+
+    void DropWeapon(float force)
+    {
+        equipment.weapons[selectedWeapon].Drop(this, force);
+        SelectWeapon(selectedWeapon);
     }
 
     public void Heal(float health)

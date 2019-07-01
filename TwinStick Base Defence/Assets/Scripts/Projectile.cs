@@ -29,40 +29,40 @@ public class Projectile : MonoBehaviour
     {
         if (!kill)
         {
-            if (type != Type.explosive)
+            var otherAgent = other.GetComponent<Agent>();
+            if (!(otherAgent && otherAgent.id == id))
             {
-                Vector3 dir = GetComponent<Rigidbody>().velocity.normalized;
-                Vector3 pos = other.ClosestPointOnBounds(transform.position);
-                RaycastHit hit;
-                var agent = other.GetComponent<Agent>();
-                if (agent)
+                if (type != Type.explosive)
                 {
-                    if (agent.id != id)
+                    Vector3 dir = GetComponent<Rigidbody>().velocity.normalized;
+                    Vector3 pos = other.ClosestPointOnBounds(transform.position);
+                    RaycastHit hit;
+                    if (otherAgent)
                     {
-                        agent.Damage(damage, dir * force, pos);
+                        otherAgent.Damage(damage, dir * force, pos);
+                        Kill();
+                    }
+                    else if (Physics.Raycast(pos - dir, dir, out hit))
+                    {
+                        Instantiate(effect, pos, Quaternion.LookRotation(Vector3.Reflect(dir, hit.normal)));
                         Kill();
                     }
                 }
-                else if (Physics.Raycast(pos - dir, dir, out hit))
+                else
                 {
-                    Instantiate(effect, pos, Quaternion.LookRotation(Vector3.Reflect(dir, hit.normal)));
+                    foreach (Collider collider in Physics.OverlapSphere(transform.position, radius))
+                    {
+                        var agent = collider.GetComponent<Agent>();
+                        if (agent)
+                        {
+                            Vector3 dir = collider.ClosestPointOnBounds(transform.position) - transform.position;
+                            float falloff = 1 - (Vector3.Magnitude(dir) / radius);
+                            agent.Damage(damage * falloff * (agent.id == id ? 0.5f : 1f), dir.normalized * force * falloff, collider.ClosestPointOnBounds(transform.position));
+                        }
+                    }
+                    Instantiate(effect, transform.position, Quaternion.identity);
                     Kill();
                 }
-            }
-            else
-            {
-                foreach (Collider collider in Physics.OverlapSphere(transform.position, radius))
-                {
-                    var agent = collider.GetComponent<Agent>();
-                    if (agent)
-                    {
-                        Vector3 dir = collider.ClosestPointOnBounds(transform.position) - transform.position;
-                        float falloff = 1 - (Vector3.Magnitude(dir) / radius);
-                        agent.Damage(damage * falloff, dir.normalized * force * falloff, collider.ClosestPointOnBounds(transform.position));
-                    }
-                }
-                Instantiate(effect, transform.position, Quaternion.identity);
-                Kill();
             }
         }
     }

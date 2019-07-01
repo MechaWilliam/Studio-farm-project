@@ -48,7 +48,6 @@ public class Agent : MonoBehaviour
 
     public void Damage(float damage, Vector3 force, Vector3 pos)
     {
-        rigidbody.AddForce(force);
         if (shield.value >= damage)
         {
             shield.value -= damage;
@@ -64,8 +63,12 @@ public class Agent : MonoBehaviour
             health.value = 0f;
             Kill();
         }
+        else
+        {
+            rigidbody.AddForce(force);
+        }
     }
-    
+
     protected virtual void Kill()
     {
         Rigidbody effect = Instantiate(killEffect, transform.position, transform.rotation).GetComponent<Rigidbody>();
@@ -73,7 +76,7 @@ public class Agent : MonoBehaviour
         effect.transform.position += transform.up * effectHeight;
         if (!dontKill)
         {
-            Destroy(gameObject);
+            Destroy(gameObject, 0.05f);
         }
     }
 }

@@ -27,10 +27,15 @@ public class Resource : MonoBehaviour
             }
             else
             {
-                kill = true;
-                FindObjectOfType<GameController>().AddResource();
-                Destroy(gameObject);
+                Kill();
             }
         }
+    }
+
+    void Kill()
+    {
+        kill = true;
+        FindObjectOfType<GameController>().AddResource();
+        Destroy(gameObject);
     }
 }
