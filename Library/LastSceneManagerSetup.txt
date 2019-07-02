@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Spawn.unity
-  isLoaded: 1
-  isActive: 1
