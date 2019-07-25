@@ -1,0 +1,140 @@
+fileFormatVersion: 2
+guid: 70c1424487aae7141bcec8d3856f3d85
+ModelImporter:
+  serializedVersion: 25
+  internalIDToNameTable: []
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: "Invalid Avatar Rig Configuration. Missing or invalid transform:\n\tRequired
+      human bone 'LeftUpperLeg' not found\n"
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 3
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 0
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    skinWeightsMode: 0
+    maxBonesPerVertex: 4
+    minBoneWeight: 0.001
+    meshOptimizationFlags: -1
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  referencedClips: []
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 3
+    human: []
+    skeleton:
+    - name: MediumSpiderTank(Clone)
+      parentName: 
+      position: {x: 0.007207432, y: 0.8629588, z: -0.21141449}
+      rotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071068}
+      scale: {x: 1, y: 1, z: 1}
+    - name: FR_UpperLeg
+      parentName: MediumSpiderTank(Clone)
+      position: {x: 0.3327005, y: -0.8345553, z: -0.07643234}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: FR_LowerLeg
+      parentName: FR_UpperLeg
+      position: {x: 0.59007734, y: -0.48047224, z: 0.06427673}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BR_UpperLeg
+      parentName: MediumSpiderTank(Clone)
+      position: {x: 0.45329612, y: 0.67542356, z: -0.07643234}
+      rotation: {x: 0, y: 0, z: 0.73727715, w: 0.6755904}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BR_LowerLeg
+      parentName: BR_UpperLeg
+      position: {x: 0.58168095, y: -0.47443038, z: 0.06427673}
+      rotation: {x: 0, y: 0, z: -0.000000085681684, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BL_UpperLeg
+      parentName: MediumSpiderTank(Clone)
+      position: {x: -0.4370086, y: 0.6949926, z: -0.07643234}
+      rotation: {x: 0, y: 0, z: 0.9914448, w: 0.13052645}
+      scale: {x: 1, y: 1, z: 1}
+    - name: BL_LowerLeg
+      parentName: BL_UpperLeg
+      position: {x: 0.58650666, y: -0.47948882, z: 0.06427673}
+      rotation: {x: 0, y: 0, z: -0.00000008940697, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    - name: FL_UpperLeg
+      parentName: MediumSpiderTank(Clone)
+      position: {x: -0.3314067, y: -0.8257659, z: -0.07643234}
+      rotation: {x: 0, y: 0, z: -0.7372774, w: 0.67559016}
+      scale: {x: 1, y: 1, z: 1}
+    - name: FL_LowerLeg
+      parentName: FL_UpperLeg
+      position: {x: 0.5860534, y: -0.47425005, z: 0.06427673}
+      rotation: {x: 0, y: -0, z: -0, w: 1}
+      scale: {x: 1, y: 1, z: 1}
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    globalScale: 1
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
