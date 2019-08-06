@@ -157,7 +157,7 @@ Transform:
   - {fileID: 7964623308198089798}
   - {fileID: 7971180656837312838}
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &304303030
 GameObject:
@@ -189,7 +189,7 @@ Transform:
   - {fileID: 963194228}
   - {fileID: 705507995}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &569729493
 PrefabInstance:
@@ -349,6 +349,80 @@ Transform:
   m_Father: {fileID: 304303031}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1001 &811263306
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -927199367670048503, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_Name
+      value: MediumSpiderDrone
+      objectReference: {fileID: 0}
+    - target: {fileID: -6057140222963153312, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: 6956041118c156d4aace68f8110bf032, type: 2}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 15.68
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.539
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -61.628098
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: bc0641922c2fdba4b8231b8cc9d44633,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: bc0641922c2fdba4b8231b8cc9d44633, type: 3}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -821,7 +895,7 @@ Transform:
   - {fileID: 5006512736359015611}
   - {fileID: 5006512736172384219}
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &813276500167400727 stripped
 Transform:
@@ -1246,7 +1320,7 @@ PrefabInstance:
     - target: {fileID: 2756700289787885423, guid: 4d7efffa45ec3484f9e8b4fa43be4b38,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2756700289787885423, guid: 4d7efffa45ec3484f9e8b4fa43be4b38,
         type: 3}
