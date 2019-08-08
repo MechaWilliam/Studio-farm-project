@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
@@ -196,5 +197,10 @@ public class MenuController : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+    }
+
+    public void MenuReturn()
+    {
+        SceneManager.LoadScene("Start Menu");
     }
 }
