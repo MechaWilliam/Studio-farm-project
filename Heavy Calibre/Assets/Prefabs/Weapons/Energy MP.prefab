@@ -104,7 +104,7 @@ GameObject:
   - component: {fileID: 1874179099803275679}
   - component: {fileID: 202838548346278375}
   m_Layer: 0
-  m_Name: SMG
+  m_Name: Energy MP
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140,7 +140,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    projectile: {fileID: 8828154103584114523, guid: 617f0413bef4cb44cb3f41ca8c2dfe4f,
+    projectile: {fileID: 8828154103584114523, guid: 9634ff1e8e5a1b94b9e87fc4876f04a3,
       type: 3}
     initialVelocity: 60
     recoil: 120
@@ -159,10 +159,11 @@ MonoBehaviour:
     weight: 20
     mobility: 0.9
     oneHanded: 0
-  pSpawn: {fileID: 656349698201950975}
-  effect: {fileID: 4681186385874433243, guid: 7ed4508061ab95e4a848735bc39a1098, type: 3}
+  pSpawn:
+  - {fileID: 656349698201950975}
+  effect: {fileID: 0}
   effectDelay: 0
-  eSpawn: {fileID: 4411196470800828010}
+  eSpawn: {fileID: 0}
   equiped: 1
   equipmentIndex: 0
   targetTransform: {fileID: 0}

@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 8940891107880646363}
   - component: {fileID: 2113669436206149726}
   m_Layer: 0
-  m_Name: Assault Rifle
+  m_Name: Energy Rifle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   data:
-    projectile: {fileID: 8828154103584114523, guid: 40ff686d5cdc3dd4192ed16a860133e5,
+    projectile: {fileID: 8828154103584114523, guid: ccf960b90c9e4e44aab90a0ec0ca0874,
       type: 3}
     initialVelocity: 60
     recoil: 200
@@ -284,10 +284,11 @@ MonoBehaviour:
     weight: 25
     mobility: 0.8
     oneHanded: 0
-  pSpawn: {fileID: 4391309666571992864}
-  effect: {fileID: 4681186385874433243, guid: 7ed4508061ab95e4a848735bc39a1098, type: 3}
+  pSpawn:
+  - {fileID: 4391309666571992864}
+  effect: {fileID: 0}
   effectDelay: 0
-  eSpawn: {fileID: 1168601050164405103}
+  eSpawn: {fileID: 0}
   equiped: 1
   equipmentIndex: 0
   targetTransform: {fileID: 0}

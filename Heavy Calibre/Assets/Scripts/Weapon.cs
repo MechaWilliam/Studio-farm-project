@@ -5,7 +5,7 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     public WeaponData data;
-    public Transform pSpawn;
+    public Transform[] pSpawn;
     public GameObject effect;
     public float effectDelay;
     public Transform eSpawn;
@@ -108,14 +108,29 @@ public class Weapon : MonoBehaviour
 
     void Shoot()
     {
-        if (ignorObstruction || !Physics.CheckSphere(pSpawn.position, 0.25f, ~(1<<10)))
+        if(pSpawn.Length > 1)
+        {
+            for(int i = 0; i < pSpawn.Length; i++)
+            {
+                Shoot(i);
+            }
+        }
+        else
+        {
+            Shoot(0);
+        }
+    }
+
+    void Shoot(int barrelIndex)
+    {
+        if (ignorObstruction || !Physics.CheckSphere(pSpawn[barrelIndex].position, 0.25f, ~(1<<10)))
         {
             if (warmup == data.maxWarmup)
             {
                 Vector3 dir = Quaternion.AngleAxis(Random.Range(-accuracy, accuracy), Vector3.up) * (agent ? agent.aimDir : transform.rotation * Vector3.forward);
-                Vector3 aimPos = agent ? agent.transform.position + (dir * 10f) : pSpawn.position + dir;
+                Vector3 aimPos = agent ? agent.transform.position + (dir * 10f) : pSpawn[barrelIndex].position + dir;
                 aimPos.y = transform.position.y;
-                Projectile projectile = Instantiate(data.projectile, pSpawn.position, Quaternion.identity).GetComponent<Projectile>();
+                Projectile projectile = Instantiate(data.projectile, pSpawn[barrelIndex].position, Quaternion.identity).GetComponent<Projectile>();
                 projectile.transform.LookAt(aimPos);
                 projectile.GetComponent<Rigidbody>().velocity = projectile.transform.forward * data.initialVelocity;
                 projectile.hitData = new HitData((agent && !ignorObstruction) ? agent.id : 100, gameObject.name);

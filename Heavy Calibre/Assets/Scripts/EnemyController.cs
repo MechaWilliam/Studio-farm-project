@@ -37,6 +37,10 @@ public class EnemyController : Agent
         if (player.isActiveAndEnabled)
         {
             movement = (player.transform.position - transform.position).normalized;
+            if(attackCooldown < 0)
+            {
+
+            }
         }
 
         if ((lastPos - transform.position).magnitude <= minStuckDistance)

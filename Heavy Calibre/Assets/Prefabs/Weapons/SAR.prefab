@@ -235,7 +235,8 @@ MonoBehaviour:
     weight: 25
     mobility: 0.8
     oneHanded: 0
-  pSpawn: {fileID: 2529787087690915626}
+  pSpawn:
+  - {fileID: 2529787087690915626}
   effect: {fileID: 4681186385874433243, guid: 7ed4508061ab95e4a848735bc39a1098, type: 3}
   effectDelay: 0
   eSpawn: {fileID: 325621741173050890}

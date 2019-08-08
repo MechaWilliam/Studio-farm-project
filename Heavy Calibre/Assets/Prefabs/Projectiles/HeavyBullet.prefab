@@ -5169,7 +5169,7 @@ ParticleSystem:
     startLifetime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 5
+      scalar: 0.5
       minScalar: 5
       maxCurve:
         serializedVersion: 2
@@ -5222,8 +5222,8 @@ ParticleSystem:
     startSpeed:
       serializedVersion: 2
       minMaxState: 3
-      scalar: 5
-      minScalar: 0
+      scalar: 60
+      minScalar: 5
       maxCurve:
         serializedVersion: 2
         m_Curve:
@@ -5276,7 +5276,7 @@ ParticleSystem:
       serializedVersion: 2
       minMaxState: 0
       minColor: {r: 1, g: 1, b: 1, a: 1}
-      maxColor: {r: 0.5987451, g: 0.6211158, b: 0.6509434, a: 0.05882353}
+      maxColor: {r: 0.6, g: 0.61960787, b: 0.6509804, a: 0.039215688}
       maxGradient:
         serializedVersion: 2
         key0: {r: 1, g: 1, b: 1, a: 1}
@@ -5714,7 +5714,7 @@ ParticleSystem:
     serializedVersion: 6
     enabled: 1
     type: 4
-    angle: 50
+    angle: 20
     length: 5
     boxThickness: {x: 0, y: 0, z: 0}
     radiusThickness: 1
@@ -7462,7 +7462,7 @@ ParticleSystem:
       m_Bits: 4294967295
     influenceList: []
   ClampVelocityModule:
-    enabled: 0
+    enabled: 1
     x:
       serializedVersion: 2
       minMaxState: 0
@@ -7683,7 +7683,7 @@ ParticleSystem:
     drag:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 0
+      scalar: 6
       minScalar: 0
       maxCurve:
         serializedVersion: 2
@@ -9921,8 +9921,7 @@ MonoBehaviour:
   penetration: 40
   health: 0
   type: 0
-  id: 0
-  effect: {fileID: 1432399139732742722, guid: 3e8ece4e91bb9054bbda31c366e31848, type: 3}
+  effect: {fileID: 1432399139732742722, guid: c0154b251304d1c4594a3af881224bc7, type: 3}
   particleSystems:
   - {fileID: 3434540334557040522}
   - {fileID: 5688325369807906906}

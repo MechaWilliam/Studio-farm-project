@@ -96,7 +96,7 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
     m_ExportTrainingData: 0
-  m_LightingDataAsset: {fileID: 112000000, guid: a399992aea43b174fa7aa3c8c271cf68,
+  m_LightingDataAsset: {fileID: 112000000, guid: a8bf4b688ed7a8147a36ba846e0083e7,
     type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
@@ -2049,6 +2049,7 @@ MonoBehaviour:
     type: 3}
   playerCount: 1
   weapons:
+  - {fileID: 1943037875136698748, guid: 4fd63ff309dacf2499cce9fd41a57bd3, type: 3}
   - {fileID: 4622107603792578515, guid: 2faeaf909746f7f4493d4f6b5b80f668, type: 3}
   - {fileID: 5122173767568182125, guid: dc0c67eb89db074488bcfcc7dba0c76f, type: 3}
   - {fileID: 758777430156005216, guid: a4c67df7938cbf143a8df9545c530d0d, type: 3}
@@ -14689,7 +14690,7 @@ Transform:
   m_GameObject: {fileID: 6116420975594645191}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.01, z: 0.5}
   m_Children: []
   m_Father: {fileID: 1957650678}
   m_RootOrder: 3
@@ -14828,8 +14829,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 600, y: 10, z: 600}
-  m_Center: {x: 0, y: -5.06, z: 0}
+  m_Size: {x: 600, y: 36.46218, z: 600}
+  m_Center: {x: 0, y: -18.54, z: -0.000015258789}
 --- !u!4 &6120072928579074074
 Transform:
   m_ObjectHideFlags: 0

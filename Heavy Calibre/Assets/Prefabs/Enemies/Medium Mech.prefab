@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 1794762962361034374}
   - component: {fileID: 6761071999746476478}
   - component: {fileID: 4863356168918822403}
+  - component: {fileID: 726482988588591804}
   m_Layer: 0
   m_Name: Medium Mech
   m_TagString: Untagged
@@ -32,6 +33,7 @@ Transform:
   m_Children:
   - {fileID: 832938313865109327}
   - {fileID: 8045318265912063923}
+  - {fileID: 8995326648178502428}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62,7 +64,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 80
+  m_Constraints: 112
   m_CollisionDetection: 0
 --- !u!114 &4863356168918822403
 MonoBehaviour:
@@ -108,6 +110,48 @@ MonoBehaviour:
   unStickForce: 300
   points: 100
   drop: {fileID: 1463319262316087698, guid: e115ab5ad259e6747aecdb3746569c43, type: 3}
+--- !u!114 &726482988588591804
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220893055138131787}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fce173d41565c18428bee12d99d793f7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  data:
+    projectile: {fileID: 8828154103584114523, guid: bcb960ee1b862b04d80c66a4256f12e2,
+      type: 3}
+    initialVelocity: 60
+    recoil: 100
+    minAccuracy: 0
+    maxAccuracy: 0
+    spreadDelta: 0
+    maxStability: 0
+    recoveryTime: 0
+    stabilityTime: 0
+    burstCount: 01000000
+    maxCooldown:
+    - 0
+    maxWarmup: 0
+    maxCapacity: 1
+    weight: 0
+    mobility: 1
+    oneHanded: 0
+  pSpawn:
+  - {fileID: 8995326648178502428}
+  effect: {fileID: 0}
+  effectDelay: 0
+  eSpawn: {fileID: 0}
+  equiped: 0
+  equipmentIndex: 0
+  targetTransform: {fileID: 0}
+  agent: {fileID: 0}
+  other: {fileID: 0}
+  ignorObstruction: 0
 --- !u!1 &1259882524177241735
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +306,36 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!1 &2344250952213719401
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8995326648178502428}
+  m_Layer: 0
+  m_Name: pSpawn
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &8995326648178502428
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2344250952213719401}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.66, z: 2.325}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 7486088109623085996}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2688357256377318076
 GameObject:
   m_ObjectHideFlags: 0
