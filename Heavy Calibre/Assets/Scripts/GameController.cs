@@ -57,7 +57,7 @@ public class GameController : MonoBehaviour
         {
             players[i] = Instantiate(playerPrefab, Vector3.zero, Quaternion.identity).GetComponent<PlayerController>();
         }
-        SpawnWeapon(0, 0, false);
+        SpawnWeapon(2, 0, false);
         menuController.DisplayWeapons(weaponSchematics);
         menuController.DisplayEquipment(armourSchematics, shieldSchematics);
         menuController.SetMenu("Start");
@@ -209,7 +209,7 @@ public class GameController : MonoBehaviour
         AddResource(-resources);
         KillAll();
         players[0].Respawn();
-        SpawnWeapon(0, 0);
+        SpawnWeapon(2, 0);
         waveText.text = null;
         menuController.DisplayWeapons(weaponSchematics);
         menuController.DisplayEquipment(armourSchematics, shieldSchematics);

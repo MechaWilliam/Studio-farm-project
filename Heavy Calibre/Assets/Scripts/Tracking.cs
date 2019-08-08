@@ -9,7 +9,8 @@ public class Tracking : MonoBehaviour
     public GameObject listElement;
     public List<Objective> missions = new List<Objective>();
     [Header("Random elements")]
-    public string[] enemies, weapons;
+    public string[] enemies;
+    public string[] weapons;
 
     public static Stats stats = new Stats();
     public static List<Objective> objectives = new List<Objective>();
