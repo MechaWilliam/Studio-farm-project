@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+
+
 public class Menu : MonoBehaviour
 {
     public GameObject menuPanel;
     public GameObject optionsPanel;
+    
 
     // Start is called before the first frame update
     void Start()
     {
         menuPanel.SetActive(true);
         optionsPanel.SetActive(false);
+       
     }
 
     // Update is called once per frame
@@ -21,6 +25,7 @@ public class Menu : MonoBehaviour
 
     }
 
+ 
 
     public void Back()
     {
